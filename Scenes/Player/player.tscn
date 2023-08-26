@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3 uid="uid://dqi7ekpwfx780"]
+
+[ext_resource type="Script" path="res://Scenes/Player/player.gd" id="1_4w2it"]
+[ext_resource type="Texture2D" uid="uid://vympwop2vhxc" path="res://Assets/Characters/character_0000.png" id="2_yut0r"]
+[ext_resource type="Script" path="res://Scripts/State/StateMachine.gd" id="3_6tltd"]
+[ext_resource type="Script" path="res://Scripts/State/PlayerStates/PlayerIdleState.gd" id="4_0vtdn"]
+[ext_resource type="Script" path="res://Scripts/State/PlayerStates/PlayerJumpState.gd" id="5_42bjo"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3qogp"]
+radius = 7.0
+height = 16.0
+
+[node name="Player" type="CharacterBody2D"]
+position = Vector2(0, -9)
+script = ExtResource("1_4w2it")
+
+[node name="JumpTrojectoryLine" type="Line2D" parent="."]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1.19209e-07, 1.19209e-07)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_yut0r")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1)
+shape = SubResource("CapsuleShape2D_3qogp")
+
+[node name="CoyoteTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="JumpBufferTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("3_6tltd")
+initial_state = NodePath("PlayerIdleState")
+
+[node name="PlayerIdleState" type="Node" parent="StateMachine" node_paths=PackedStringArray("player")]
+script = ExtResource("4_0vtdn")
+player = NodePath("../..")
+
+[node name="PlayerJumpState" type="Node" parent="StateMachine"]
+script = ExtResource("5_42bjo")
