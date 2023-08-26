@@ -1,0 +1,74 @@
+[gd_scene load_steps=9 format=3 uid="uid://c5txhug6yy62c"]
+
+[ext_resource type="Texture2D" uid="uid://coedxcct0r74f" path="res://Assets/Tiles/tile_0003.png" id="1_2kfsj"]
+[ext_resource type="Script" path="res://Scenes/Objects/moving_platform.gd" id="1_7tkll"]
+[ext_resource type="Texture2D" uid="uid://bovvlujqfsjkv" path="res://Assets/Tiles/tile_0002.png" id="2_ml51d"]
+[ext_resource type="Texture2D" uid="uid://v3pmeaqo5v3" path="res://Assets/Tiles/tile_0001.png" id="3_0a0gp"]
+
+[sub_resource type="Animation" id="Animation_jj4db"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_2bl4e"]
+resource_name = "move_platform"
+length = 10.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 10),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3lvn2"]
+_data = {
+"RESET": SubResource("Animation_jj4db"),
+"move_platform": SubResource("Animation_2bl4e")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a1rdh"]
+size = Vector2(54, 18)
+
+[node name="PathFollow2D" type="PathFollow2D"]
+script = ExtResource("1_7tkll")
+
+[node name="MovingPlatform" type="AnimatableBody2D" parent="." groups=["Moving Platform"]]
+disable_mode = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="MovingPlatform"]
+root_node = NodePath("../..")
+autoplay = "move_platform"
+libraries = {
+"": SubResource("AnimationLibrary_3lvn2")
+}
+
+[node name="Sprite2D" type="Sprite2D" parent="MovingPlatform"]
+position = Vector2(18, 0)
+texture = ExtResource("1_2kfsj")
+
+[node name="Sprite2D2" type="Sprite2D" parent="MovingPlatform"]
+texture = ExtResource("2_ml51d")
+
+[node name="Sprite2D3" type="Sprite2D" parent="MovingPlatform"]
+position = Vector2(-18, 0)
+texture = ExtResource("3_0a0gp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MovingPlatform"]
+shape = SubResource("RectangleShape2D_a1rdh")
