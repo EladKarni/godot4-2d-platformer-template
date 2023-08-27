@@ -17,7 +17,7 @@ extends CharacterBody2D
 @export_range(0, 50) var friction := 50.0
 ## Acceleration while in the air (how quickly the player reaches max speed)
 @export_range(0, 500) var air_acceleration := 5.0
-## Acceleration while in the air (how quickly the player reaches max speed)
+## Air friction while in the air (how quickly the player slows down)
 @export_range(0, 50) var air_resistance := 50.0
 ## Sets a variable max speed depending on how far the joystick is pushed
 @export var is_variable_max_speed := false
@@ -98,10 +98,10 @@ func _projected_jump_trojectory(_delta, direction):
 # Flips the player sprite depending on their movemnt direction
 func _set_sprite_direction(direction: int) -> void:
 	if direction > 0.0:
-		$Sprite2D.flip_h = true
+		$AnimatedSprite2D.flip_h = true
 
 	if direction < 0.0:
-		$Sprite2D.flip_h = false
+		$AnimatedSprite2D.flip_h = false
 
 
 func _physics_process(delta):
@@ -124,6 +124,11 @@ func _physics_process(delta):
 	if Input.is_action_just_released("Jump"):
 		jump_cut()
 	
+	if velocity != Vector2.ZERO:
+		$AnimatedSprite2D.play("walk")
+	else:
+		$AnimatedSprite2D.play("idle")
+		
 #	if Input.is_action_just_pressed("Preview_Jump"):
 #		_projected_jump_trojectory(delta, sign(velocity.x))
 	
