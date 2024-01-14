@@ -54,10 +54,10 @@ disable_mode = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="MovingPlatform"]
 root_node = NodePath("../..")
-autoplay = "move_platform"
 libraries = {
 "": SubResource("AnimationLibrary_3lvn2")
 }
+autoplay = "move_platform"
 
 [node name="Sprite2D" type="Sprite2D" parent="MovingPlatform"]
 position = Vector2(18, 0)
